@@ -18,6 +18,13 @@
                 </div>
             </div>
 
+            <!-- Add this after the Dashboard nav link (around line 19) -->
+@if(Auth::user()->isAdmin())
+    <x-nav-link :href="route('admin.dashboard')" :active="request()->routeIs('admin.*')">
+        {{ __('Admin Panel') }}
+    </x-nav-link>
+@endif
+
             <!-- Settings Dropdown -->
             <div class="hidden sm:flex sm:items-center sm:ms-6">
                 <x-dropdown align="right" width="48">
@@ -71,6 +78,13 @@
                 {{ __('Dashboard') }}
             </x-responsive-nav-link>
         </div>
+
+        <!-- Add after the responsive Dashboard link -->
+@if(Auth::user()->isAdmin())
+    <x-responsive-nav-link :href="route('admin.dashboard')" :active="request()->routeIs('admin.*')">
+        {{ __('Admin Panel') }}
+    </x-responsive-nav-link>
+@endif
 
         <!-- Responsive Settings Options -->
         <div class="pt-4 pb-1 border-t border-gray-200">
