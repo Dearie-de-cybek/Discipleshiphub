@@ -24,22 +24,34 @@ class ResourceController extends Controller
         return view('admin.resources.create');
     }
 
-    public function store(Request $request)
-    {
+   public function store(Request $request)
+{
+    try {
         $validated = $request->validate([
             'title' => 'required|string|max:255',
             'description' => 'nullable|string',
             'week_number' => 'required|integer|min:1|max:12',
             'type' => 'required|in:document,video,audio,link,other',
-            'file' => 'nullable|file|max:51200', // 50MB max
+            'file' => 'nullable|file|mimes:pdf,doc,docx,ppt,pptx,xls,xlsx,mp4,mp3,jpg,jpeg,png,zip|max:51200',
             'external_link' => 'nullable|url',
             'is_published' => 'boolean',
         ]);
 
         // Handle file upload
         if ($request->hasFile('file')) {
-            $path = $request->file('file')->store('resources', 'public');
-            $validated['file_path'] = $path;
+            $file = $request->file('file');
+            
+            // Check if file is valid
+            if (!$file->isValid()) {
+                return back()->withErrors(['file' => 'The uploaded file is not valid.'])->withInput();
+            }
+            
+            try {
+                $path = $file->store('resources', 'public');
+                $validated['file_path'] = $path;
+            } catch (\Exception $e) {
+                return back()->withErrors(['file' => 'Failed to upload file: ' . $e->getMessage()])->withInput();
+            }
         }
 
         $validated['uploaded_by'] = auth()->id();
@@ -49,7 +61,13 @@ class ResourceController extends Controller
 
         return redirect()->route('admin.resources.index')
             ->with('success', 'Resource uploaded successfully!');
+            
+    } catch (\Illuminate\Validation\ValidationException $e) {
+        return back()->withErrors($e->errors())->withInput();
+    } catch (\Exception $e) {
+        return back()->withErrors(['error' => 'An error occurred: ' . $e->getMessage()])->withInput();
     }
+}
 
     public function edit(Resource $resource)
     {
