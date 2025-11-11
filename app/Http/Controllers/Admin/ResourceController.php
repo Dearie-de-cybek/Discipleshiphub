@@ -24,15 +24,51 @@ class ResourceController extends Controller
         return view('admin.resources.create');
     }
 
-   public function store(Request $request)
+ public function store(Request $request)
 {
+
+
+    // First, let's check if file was received
+    if ($request->hasFile('file')) {
+        $file = $request->file('file');
+
+        dd([
+    'hasFile' => $request->hasFile('file'),
+    'file' => $file,
+    'error' => $file ? $file->getError() : 'no file object',
+    'error_message' => $file ? $file->getErrorMessage() : 'no file object',
+    'upload_max_filesize' => ini_get('upload_max_filesize'),
+    'post_max_size' => ini_get('post_max_size'),
+]);
+
+        
+        // Get the actual error code
+        $error = $file->getError();
+        
+        // Map error codes to messages
+        $errorMessages = [
+            UPLOAD_ERR_INI_SIZE => 'The uploaded file exceeds the upload_max_filesize directive in php.ini (Current: ' . ini_get('upload_max_filesize') . ')',
+            UPLOAD_ERR_FORM_SIZE => 'The uploaded file exceeds the MAX_FILE_SIZE directive in the HTML form',
+            UPLOAD_ERR_PARTIAL => 'The uploaded file was only partially uploaded',
+            UPLOAD_ERR_NO_FILE => 'No file was uploaded',
+            UPLOAD_ERR_NO_TMP_DIR => 'Missing a temporary folder',
+            UPLOAD_ERR_CANT_WRITE => 'Failed to write file to disk',
+            UPLOAD_ERR_EXTENSION => 'A PHP extension stopped the file upload',
+        ];
+        
+        if ($error !== UPLOAD_ERR_OK) {
+            $errorMessage = $errorMessages[$error] ?? 'Unknown upload error (Code: ' . $error . ')';
+            return back()->withErrors(['file' => $errorMessage])->withInput();
+        }
+    }
+    
     try {
         $validated = $request->validate([
             'title' => 'required|string|max:255',
             'description' => 'nullable|string',
             'week_number' => 'required|integer|min:1|max:12',
             'type' => 'required|in:document,video,audio,link,other',
-            'file' => 'nullable|file|mimes:pdf,doc,docx,ppt,pptx,xls,xlsx,mp4,mp3,jpg,jpeg,png,zip|max:51200',
+            'file' => 'nullable|file|max:51200', // 50MB
             'external_link' => 'nullable|url',
             'is_published' => 'boolean',
         ]);
@@ -41,16 +77,15 @@ class ResourceController extends Controller
         if ($request->hasFile('file')) {
             $file = $request->file('file');
             
-            // Check if file is valid
-            if (!$file->isValid()) {
-                return back()->withErrors(['file' => 'The uploaded file is not valid.'])->withInput();
-            }
-            
-            try {
-                $path = $file->store('resources', 'public');
-                $validated['file_path'] = $path;
-            } catch (\Exception $e) {
-                return back()->withErrors(['file' => 'Failed to upload file: ' . $e->getMessage()])->withInput();
+            if ($file->isValid()) {
+                try {
+                    $path = $file->store('resources', 'public');
+                    $validated['file_path'] = $path;
+                } catch (\Exception $e) {
+                    return back()->withErrors(['file' => 'Failed to store file: ' . $e->getMessage()])->withInput();
+                }
+            } else {
+                return back()->withErrors(['file' => 'The file is not valid'])->withInput();
             }
         }
 
