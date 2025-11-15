@@ -72,7 +72,7 @@ class DiscipleshipController extends Controller
         return view('discipleship.devotion', compact('todaysDevotion', 'user'));
     }
 
-    public function completeDevot ion()
+    public function completeDevotion()
     {
         $user = auth()->user();
         $progress = $user->progress;

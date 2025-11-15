@@ -1,7 +1,10 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\LessonController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\JourneyMapController;
+use App\Http\Controllers\DiscipleshipController;
 use App\Http\Controllers\ResourceViewController;
 use App\Http\Controllers\UserDashboardController;
 use App\Http\Controllers\Admin\ResourceController;
@@ -30,6 +33,15 @@ Route::get('/resources', [ResourceViewController::class, 'index'])
 Route::get('/dashboard', [UserDashboardController::class, 'index'])
     ->middleware(['auth', 'verified'])
     ->name('dashboard');
+
+Route::middleware(['auth', 'verified'])->prefix('discipleship')->name('discipleship.')->group(function () {
+    Route::get('/journey-map', [JourneyMapController::class, 'index'])->name('journey-map');
+    Route::get('/lessons', [LessonController::class, 'index'])->name('lessons.index');
+    Route::get('/lessons/{lesson}', [LessonController::class, 'show'])->name('lessons.show');
+    Route::post('/lessons/{lesson}/complete', [LessonController::class, 'complete'])->name('lessons.complete');
+    Route::get('/devotion', [DiscipleshipController::class, 'devotion'])->name('devotion');
+    Route::post('/devotion/complete', [DiscipleshipController::class, 'completeDevot ion'])->name('devotion.complete');
+});
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
