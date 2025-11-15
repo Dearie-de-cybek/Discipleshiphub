@@ -6,18 +6,20 @@ use App\Http\Controllers\Admin\ResourceController;
 use App\Http\Controllers\Admin\DashboardController;
 
 Route::get('/', function () {
-    return view('welcome');
-});
+    return view('home');  
+})->name('home');
 
 Route::get('/about', function () {
     return view('about');
-});
+})->name('about');
+
 Route::get('/curriculum', function () {
     return view('curriculum');
-});
+})->name('curriculum');
+
 Route::get('/apply', function () {
     return view('apply');
-});
+})->name('apply');
 
 Route::get('/dashboard', function () {
     return view('dashboard');
