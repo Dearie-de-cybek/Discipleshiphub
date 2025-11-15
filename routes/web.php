@@ -12,6 +12,12 @@ Route::get('/', function () {
 Route::get('/about', function () {
     return view('about');
 });
+Route::get('/curriculum', function () {
+    return view('curriculum');
+});
+Route::get('/apply', function () {
+    return view('apply');
+});
 
 Route::get('/dashboard', function () {
     return view('dashboard');
