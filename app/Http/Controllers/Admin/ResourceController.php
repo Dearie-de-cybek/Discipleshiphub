@@ -31,14 +31,7 @@ class ResourceController extends Controller
         if ($request->hasFile('file')) {
             $file = $request->file('file');
 
-            //         dd([
-            //     'hasFile' => $request->hasFile('file'),
-            //     'file' => $file,
-            //     'error' => $file ? $file->getError() : 'no file object',
-            //     'error_message' => $file ? $file->getErrorMessage() : 'no file object',
-            //     'upload_max_filesize' => ini_get('upload_max_filesize'),
-            //     'post_max_size' => ini_get('post_max_size'),
-            // ]);
+          
 
 
             // Get the actual error code
