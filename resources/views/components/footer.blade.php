@@ -63,7 +63,7 @@
                 </div>
                 
                 <div class="text-sm text-gray-400">
-                    <p class="mb-2">Next Intake: <span class="text-white font-semibold">January 2026</span></p>
+                    <p class="mb-2">Next Intake: <span class="text-white font-semibold">2026</span></p>
                     <p>12-Week Intensive Program</p>
                 </div>
             </div>

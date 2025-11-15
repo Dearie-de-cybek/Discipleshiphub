@@ -9,7 +9,7 @@
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net">
-    <link href="https://fonts.bunny.net/css?family=inter:400,500,600,700,800,900&display=swap" rel="stylesheet" />
+    <link href="https://fonts.bunny.net/css?family=montserrat:300,400,500,600,700,800,900&display=swap" rel="stylesheet" />
 
     <!-- Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
@@ -20,7 +20,7 @@
 
     @stack('styles')
 </head>
-<body class="min-h-screen bg-white text-gray-900 antialiased font-sans">
+<body class="min-h-screen bg-white text-gray-900 antialiased" style="font-family: 'Montserrat', sans-serif;">
     <!-- Navigation -->
     @include('components.nav')
 
