@@ -287,7 +287,7 @@
                     Apply Now
                 </a>
                 <p class="mt-8 text-sm text-white/80">
-                    Next intake: <span class="font-semibold text-white">January 2026</span>
+                    Next intake: <span class="font-semibold text-white">2026</span>
                 </p>
             </div>
         </div>
