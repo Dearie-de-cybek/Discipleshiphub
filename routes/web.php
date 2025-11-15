@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ResourceViewController;
 use App\Http\Controllers\UserDashboardController;
 use App\Http\Controllers\Admin\ResourceController;
 use App\Http\Controllers\Admin\DashboardController;
@@ -21,6 +22,10 @@ Route::get('/curriculum', function () {
 Route::get('/apply', function () {
     return view('apply');
 })->name('apply');
+
+Route::get('/resources', [ResourceViewController::class, 'index'])
+    ->middleware(['auth', 'verified'])
+    ->name('resources.view');
 
 Route::get('/dashboard', [UserDashboardController::class, 'index'])
     ->middleware(['auth', 'verified'])
