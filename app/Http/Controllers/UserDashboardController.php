@@ -23,6 +23,8 @@ class UserDashboardController extends Controller
 
         $resourcesByWeek = $resources->groupBy('week_number');
 
+      
+
         return view('dashboard', compact('resources', 'resourcesByWeek'));
     }
 }
