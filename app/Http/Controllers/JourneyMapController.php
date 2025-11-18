@@ -10,7 +10,12 @@ class JourneyMapController extends Controller
     public function index()
     {
         $user = auth()->user();
+        
+        // CRITICAL: Initialize progress if it doesn't exist
         $user->initializeProgress();
+        
+        // Reload the user to get the fresh progress relationship
+        $user->refresh();
         
         $allLevels = SpiritualLevel::orderBy('order')->get();
         $currentLevel = $user->currentLevel;

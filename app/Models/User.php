@@ -90,10 +90,11 @@ class User extends Authenticatable
 
     // Helper Methods
     public function initializeProgress()
-    {
-        if (!$this->progress) {
-            $firstLevel = SpiritualLevel::orderBy('order')->first();
-            
+{
+    if (!$this->progress) {
+        $firstLevel = SpiritualLevel::orderBy('order')->first();
+        
+        if ($firstLevel) {
             UserProgress::create([
                 'user_id' => $this->id,
                 'spiritual_level_id' => $firstLevel->id,
@@ -107,6 +108,7 @@ class User extends Authenticatable
             $this->save();
         }
     }
+}
 
     public function getProgressPercentage()
     {
