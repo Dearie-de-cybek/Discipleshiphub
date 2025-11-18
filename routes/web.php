@@ -41,6 +41,8 @@ Route::middleware(['auth', 'verified'])->prefix('discipleship')->name('disciples
     Route::post('/lessons/{lesson}/complete', [LessonController::class, 'complete'])->name('lessons.complete');
     Route::get('/devotion', [DiscipleshipController::class, 'devotion'])->name('devotion');
     Route::post('/devotion/complete', [DiscipleshipController::class, 'completeDevot ion'])->name('devotion.complete');
+
+    Route::post('/resources/{resource}/complete', [LessonController::class, 'completeResource'])->name('resources.complete');
 });
 
 Route::middleware('auth')->group(function () {
